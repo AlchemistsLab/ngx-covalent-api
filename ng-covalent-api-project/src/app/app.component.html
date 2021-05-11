@@ -1,0 +1,8 @@
+<h3>NGX-Covalent-API</h3>
+<p>Angular library to connect to the Covalent API endpoints.</p>
+
+<button (click)="onGetTokens()">Get Tokens for sample ID</button>
+
+<div *ngFor="let token of this.tokenItems">
+  <p>{{token.contract_name}} - {{token.balance}}</p>
+</div>
