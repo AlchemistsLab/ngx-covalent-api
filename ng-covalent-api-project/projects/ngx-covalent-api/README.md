@@ -1,24 +1,75 @@
-# NgxCovalentApi
+# ngx-covalent-api
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.13.
+BETA, DOES NOT FULLY WORK YET.
 
-## Code scaffolding
+An Angular library for interacting with the [Covalent API](https://www.covalenthq.com/docs/api/#overview--introduction)
 
-Run `ng generate component component-name --project ngx-covalent-api` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-covalent-api`.
-> Note: Don't forget to add `--project ngx-covalent-api` or else it will be added to the default project in your `angular.json` file. 
+# installation
 
-## Build
+`npm i ngx-covalent-api --save`
 
-Run `ng build ngx-covalent-api` to build the project. The build artifacts will be stored in the `dist/` directory.
+# Enpoints completed
 
-## Publishing
+- getTokenBalancesForAddress()
+- getHistoricalPortfolioValueOverTime()
 
-After building your library with `ng build ngx-covalent-api`, go to the dist folder `cd dist/ngx-covalent-api` and run `npm publish`.
+# Usage:
 
-## Running unit tests
+## import the module and add your API key
 
-Run `ng test ngx-covalent-api` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
 
-## Further help
+import { NgxCovalentApiModule } from 'projects/ngx-covalent-api/src/public-api';
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    ...
+    NgxCovalentApiModule.forRoot({
+      configuration: { apiKey: '' },
+    }),
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+
+
+```
+
+## import the service and call an endpoint with your parameters
+
+- call functions with the corresponding parameters
+
+```
+
+import { TokenBalanceItem } from 'projects/ngx-covalent-api/src/lib/models/TokenBalanceItem';
+import { NgxCovalentApiService } from 'projects/ngx-covalent-api/src/public-api';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
+})
+export class AppComponent {
+  tokenItems: TokenBalanceItem[];
+
+  constructor(private covalentapi: NgxCovalentApiService) {}
+
+  onGetTokens() {
+    this.covalentapi
+      .getTokenBalanceForAddress(
+        '1',
+        '0x84ae5ee482a7a4470386555eed41645aaa62f574'
+      )
+      .subscribe((val) => {
+        console.log(val);
+        this.tokenItems = val.data.items;
+      });
+
+    }
+
+}
+
+
+```

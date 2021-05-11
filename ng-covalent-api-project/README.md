@@ -1,13 +1,17 @@
+# ngx-covalent-api
 
-# about
+BETA, DOES NOT FULLY WORK YET.
 
-A WORK-IN-PROGRESS, DOES NOT WORK YET.
-
-An Angular library for interacting with the Covalent API.
+An Angular library for interacting with the [Covalent API](https://www.covalenthq.com/docs/api/#overview--introduction)
 
 # installation
 
 `npm i ngx-covalent-api --save`
+
+# Enpoints completed
+
+- getTokenBalancesForAddress()
+- getHistoricalPortfolioValueOverTime()
 
 # Usage:
 
@@ -34,6 +38,7 @@ export class AppModule {}
 ```
 
 ## import the service and call an endpoint with your parameters
+
 - call functions with the corresponding parameters
 
 ```
@@ -61,12 +66,10 @@ export class AppComponent {
         console.log(val);
         this.tokenItems = val.data.items;
       });
-  
+
     }
-  
+
 }
 
 
 ```
-
-
