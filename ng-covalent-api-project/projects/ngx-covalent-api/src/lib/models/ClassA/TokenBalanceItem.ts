@@ -1,3 +1,6 @@
+import { NftData } from './NftData';
+import { TokenType } from './TokenType';
+
 export interface TokenBalanceItem {
   contract_decimals: number;
   contract_name: string;
@@ -5,9 +8,9 @@ export interface TokenBalanceItem {
   contract_address: string;
   supports_erc: [string];
   logo_url: string;
-  type: string; // itemType
+  type: TokenType;
   balance: string;
   quote_rate: number;
   quote: number;
-  //nft_data: [NftData]?
+  nft_data: [NftData];
 }
