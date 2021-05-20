@@ -1,4 +1,4 @@
-import { Pagination } from './Pagination';
+import { Pagination } from '../Pagination';
 import { VolatilityItem } from './VolatilityItem';
 
 export interface Volatility {

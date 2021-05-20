@@ -2,7 +2,7 @@ export interface VolatilityItem {
   contract_decimals: number;
   contract_name: String;
   contract_ticker_symbol: String;
-  contract_address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2';
+  contract_address: String;
   supports_erc: String[];
   logo_url: String;
   stddev_1h: number;
@@ -12,4 +12,5 @@ export interface VolatilityItem {
   stddev_16h: number;
   stddev_24h: number;
   quote_rate: number;
+  decimalsDivisor: String;
 }

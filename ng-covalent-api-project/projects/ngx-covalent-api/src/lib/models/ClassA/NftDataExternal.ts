@@ -1,4 +1,4 @@
-export interface ExternalNftData {
+export interface NftDataExternal {
   name: String;
   description: String;
   image: String;
