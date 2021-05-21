@@ -973,7 +973,7 @@ export class NgxCovalentApiService {
    * @returns Observable
    */
   getFarmingStats(address: String) {
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<any>>(
       `${this.apiUrl}1/address/${address}/stacks/farming/positions/`
     );
   }
