@@ -27,6 +27,14 @@ import { PancakeswapNetworkAssetResponse } from './models/ClassB/PancakeswapNetw
 import { AugurAffiliateResponse } from './models/ClassB/AugurAffiliateResponse';
 import { AaveNetworkAssetResponse } from './models/ClassB/AaveNetworkAssetResponse';
 import { AaveNetworkAssetV2Response } from './models/ClassB/AaveNetworkAssetV2Response';
+import { BalancerExchangeAddressBalanceResponse } from './models/ClassB/BalancerExchangeAddressBalanceResponse';
+import { CompoundAddressBalanceResponse } from './models/ClassB/CompoundAddressBalanceResponse';
+import { CompoundAddressActivityResponse } from './models/ClassB/CompoundAddressActivityResponse';
+import { CompoundNetworkAssetResponse } from './models/ClassB/CompoundNetworkAssetResponse';
+import { CurveAddressBalanceResponse } from './models/ClassB/CurveAddressBalanceResponse';
+import { ExchangeLiquidityResponse } from './models/ClassB/ExchangeLiquidityResponse';
+import { UniswapV2NetworkAssetResponse } from './models/ClassB/UniswapV2NetworkAssetResponse';
+import { PancakeswapV2NetworkAssetResponse } from './models/ClassB/PancakeswapV2NetworkAssetResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -1046,9 +1054,9 @@ export class NgxCovalentApiService {
    * @returns
    */
   getBalancerExchangeAddressBalances(address: String) {
-    return this.http.get<CovalentResponse<>>(
-      `${this.apiUrl}1/address/${address}/stacks/balancer/balances/`
-    );
+    return this.http.get<
+      CovalentResponse<BalancerExchangeAddressBalanceResponse>
+    >(`${this.apiUrl}1/address/${address}/stacks/balancer/balances/`);
   }
   // -----------------------------
   // -------- COMPOUND -----------
@@ -1059,7 +1067,7 @@ export class NgxCovalentApiService {
    * @param address compound address. Passing in an "ENS" resolves automatically.
    */
   getCompoundAddressBalances(address: String) {
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<CompoundAddressBalanceResponse>>(
       `${this.apiUrl}1/address/${address}/stacks/compound/balances/`
     );
   }
@@ -1068,7 +1076,7 @@ export class NgxCovalentApiService {
    * @param address compound address. Passing in an "ENS" resolves automatically.
    */
   getCompoundAddressActivity(address: String) {
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<CompoundAddressActivityResponse>>(
       `${this.apiUrl}1/address/${address}/stacks/compound/acts/`
     );
   }
@@ -1078,7 +1086,7 @@ export class NgxCovalentApiService {
    * @returns Observable
    */
   getCompoundNetworkAssets() {
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<CompoundNetworkAssetResponse>>(
       `${this.apiUrl}1/networks/compound/assets/`
     );
   }
@@ -1092,7 +1100,7 @@ export class NgxCovalentApiService {
    * @param address compound address. Passing in an "ENS" resolves automatically.
    */
   getCurveAddressBalances(address: String) {
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<CurveAddressBalanceResponse>>(
       `${this.apiUrl}1/address/${address}/stacks/curve/balances/`
     );
   }
@@ -1152,7 +1160,7 @@ export class NgxCovalentApiService {
     let swap_param = swaps == undefined ? '' : `&swaps=${swaps}`;
     let params = quote_currency_param + swap_param;
 
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<ExchangeLiquidityResponse>>(
       `${this.apiUrl}56/address/${address}/stacks/pancakeswap/acts/?${params}`
     );
   }
@@ -1223,7 +1231,7 @@ export class NgxCovalentApiService {
       page_size == undefined ? '' : `&page-size=${page_size}`;
 
     let params = page_number_param + page_size_param;
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<PancakeswapV2NetworkAssetResponse>>(
       `${this.apiUrl}56/networks/pancakeswap/assets/${address}/?${params}`
     );
   }
@@ -1251,7 +1259,7 @@ export class NgxCovalentApiService {
     let swap_param = swaps == undefined ? '' : `&swaps=${swaps}`;
     let params = quote_currency_param + swap_param;
 
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<ExchangeLiquidityResponse>>(
       `${this.apiUrl}${chain_id}/address/${address}/stacks/sushiswap/acts/?${params}`
     );
   }
@@ -1338,7 +1346,7 @@ export class NgxCovalentApiService {
     swaps?: String
   ) {
     let swaps_param = swaps == undefined ? '' : `swaps=${swaps}`;
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<ExchangeLiquidityResponse>>(
       `${this.apiUrl}1/address/${address}/stacks/uniswap_v2/acts/?${swaps_param}`
     );
   }
@@ -1362,7 +1370,7 @@ export class NgxCovalentApiService {
       page_size == undefined ? '' : `&page-size=${page_size}`;
 
     let params = tickers_param + page_number_param + page_size_param;
-    return this.http.get<CovalentResponse<>>(
+    return this.http.get<CovalentResponse<UniswapV2NetworkAssetResponse>>(
       `${this.apiUrl}1/networks/uniswap_v2/assets/?${params}`
     );
   }
