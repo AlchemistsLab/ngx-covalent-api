@@ -17,6 +17,16 @@ import { NftTransactionsResponse } from './models/ClassA/NftTransactionsResponse
 import { NftTokenIdsResponse } from './models/ClassA/NftTokenIdsResponse';
 import { SpotPrices } from './models/Pricing Endpoints/SpotPrices';
 import { HistoricalPrices } from './models/Pricing Endpoints/HistoricalPrices';
+import { PancakeExchangeBalanceResponse } from './models/ClassB/PancakeExchangeBalanceResponse';
+import { SushiswapExchangeBalanceResponse } from './models/ClassB/SushiswapExchangeBalanceResponse';
+import { UniswapV2ExchangeBalanceResponse } from './models/ClassB/UniswapV2ExchangeBalanceResponse';
+import { UniswapV1ExchangeBalanceResponse } from './models/ClassB/UniswapV1ExchangeBalanceResponse';
+import { AaveAddressBalanceResponse } from './models/ClassB/AaveAddressBalanceResponse';
+import { AaveAddressBalanceV2Response } from './models/ClassB/AaveAddressBalanceV2Response';
+import { PancakeswapNetworkAssetResponse } from './models/ClassB/PancakeswapNetworkAssetResponse';
+import { AugurAffiliateResponse } from './models/ClassB/AugurAffiliateResponse';
+import { AaveNetworkAssetResponse } from './models/ClassB/AaveNetworkAssetResponse';
+import { AaveNetworkAssetV2Response } from './models/ClassB/AaveNetworkAssetV2Response';
 
 @Injectable({
   providedIn: 'root',
@@ -949,67 +959,413 @@ export class NgxCovalentApiService {
   // -----------------------------
   // -----------------------------
 
-  getFarmingStats() {}
+  /**
+   * Get farming positions on Uniswap, Sushiswap, and Harvest.
+   * @param address passing in an "ENS" resolves automatically.
+   * @returns Observable
+   */
+  getFarmingStats(address: String) {
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}1/address/${address}/stacks/farming/positions/`
+    );
+  }
 
+  // -----------------------------
   // ---------- AAVE -------------
+  // -----------------------------
 
-  getAaveV2AddressBalances() {}
+  /**
+   * Get Aave v2 address balances, supply and borrow positions.
+   * @param address Aave address
+   * @returns Observable
+   */
+  getAaveV2AddressBalances(address: String) {
+    return this.http.get<CovalentResponse<AaveAddressBalanceV2Response>>(
+      `${this.apiUrl}1/address/${address}/stacks/aave_v2/balances/`
+    );
+  }
 
-  getAaveAddressBalances() {}
+  /**
+   * Get Aave address balances.
+   * @param address Aave address
+   * @returns Observable
+   */
+  getAaveAddressBalances(address: String) {
+    return this.http.get<CovalentResponse<AaveAddressBalanceResponse>>(
+      `${this.apiUrl}1/address/${address}/stacks/aave/balances/`
+    );
+  }
 
-  getAaveV2NetworkAssets() {}
+  /**
+   * Get Aave network assets
+   * @returns Observable
+   */
+  getAaveV2NetworkAssets() {
+    return this.http.get<CovalentResponse<AaveNetworkAssetV2Response>>(
+      `${this.apiUrl}1/networks/aave_v2/assets/`
+    );
+  }
 
-  getAaveNetworkAssets() {}
+  /**
+   * Get Aave network assets
+   * @returns Observable
+   */
+  getAaveNetworkAssets() {
+    return this.http.get<CovalentResponse<AaveNetworkAssetResponse>>(
+      `${this.apiUrl}1/networks/aave/assets/`
+    );
+  }
 
+  // -----------------------------
   // ---------- AUGUR ------------
+  // -----------------------------
 
-  getAugurMarketAffiliateFeeDivisors() {}
-
+  /**
+   * Get Augur market affiliate fee divisors
+   * @param page_number optional - specific page to be returned
+   * @param page_size optional - number of results per page
+   * @returns
+   */
+  getAugurMarketAffiliateFeeDivisors(page_number?: String, page_size?: String) {
+    let page_number_param =
+      page_number == undefined ? '' : `&page-number=${page_number}`;
+    let page_size_param =
+      page_size == undefined ? '' : `&page-size=${page_size}`;
+    let params = page_number_param + page_size_param;
+    return this.http.get<CovalentResponse<AugurAffiliateResponse>>(
+      `${this.apiUrl}1/networks/augur/affiliate_fee/?${params}`
+    );
+  }
+  // -----------------------------
   // -------- BALANCER -----------
+  // -----------------------------
 
-  getBalancerExchangeAddressBalances() {}
-
+  /**
+   * Get Balancer exchange address balances.
+   * @param address balancer address. Passing in an "ENS" resolves automatically.
+   * @returns
+   */
+  getBalancerExchangeAddressBalances(address: String) {
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}1/address/${address}/stacks/balancer/balances/`
+    );
+  }
+  // -----------------------------
   // -------- COMPOUND -----------
+  // -----------------------------
 
-  getCompoundAddressActivity() {}
+  /**
+   * Get Compound address balances.
+   * @param address compound address. Passing in an "ENS" resolves automatically.
+   */
+  getCompoundAddressBalances(address: String) {
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}1/address/${address}/stacks/compound/balances/`
+    );
+  }
+  /**
+   * Get Compound address activity.
+   * @param address compound address. Passing in an "ENS" resolves automatically.
+   */
+  getCompoundAddressActivity(address: String) {
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}1/address/${address}/stacks/compound/acts/`
+    );
+  }
 
-  getCompoundAddressBalances() {}
+  /**
+   * Get Compound network assets.
+   * @returns Observable
+   */
+  getCompoundNetworkAssets() {
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}1/networks/compound/assets/`
+    );
+  }
 
-  getCompoundNetworkAssets() {}
-
+  // -----------------------------
   // ---------- CURVE ------------
+  // -----------------------------
 
-  getCurveAddressBalances() {}
+  /**
+   * Get Curve address balances.
+   * @param address compound address. Passing in an "ENS" resolves automatically.
+   */
+  getCurveAddressBalances(address: String) {
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}1/address/${address}/stacks/curve/balances/`
+    );
+  }
 
+  // -----------------------------
   // --------- PANCAKE -----------
+  // -----------------------------
 
-  getPancakeswapV2AddressExchangeBalances() {}
+  /**
+   * Get Pancakeswap V2 address exchange balances.
+   * @param address requested wallet address
+   * @param quote_currency optional - requested fiat currency
+   * @returns
+   */
+  getPancakeswapV2AddressExchangeBalances(
+    address: String,
+    quote_currency?: String
+  ) {
+    let quote_currency_param =
+      quote_currency == undefined ? '' : `quote-currency=${quote_currency}`;
+    return this.http.get<CovalentResponse<PancakeExchangeBalanceResponse>>(
+      `${this.apiUrl}56/address/${address}/stacks/pancakeswap_v2/balances/?${quote_currency_param}`
+    );
+  }
 
-  getPancakeswapAddressExchangeBalances() {}
+  /**
+   * Get Pancakeswap address exchange balances.
+   * @param address requested wallet address
+   * @param quote_currency optional - requested fiat currency
+   * @returns Observable
+   */
+  getPancakeswapAddressExchangeBalances(
+    address: String,
+    quote_currency?: String
+  ) {
+    let quote_currency_param =
+      quote_currency == undefined ? '' : `quote-currency=${quote_currency}`;
+    return this.http.get<CovalentResponse<PancakeExchangeBalanceResponse>>(
+      `${this.apiUrl}56/address/${address}/stacks/pancakeswap/balances/?${quote_currency_param}`
+    );
+  }
 
-  getPancakeswapAddressExchangeLiquidityBalances() {}
+  /**
+   * Get Pancakeswap address exchange liquidity transactions.
+   * @param address requested wallet address
+   * @param swaps optional - Get additional insight on swap event data related to this address, default: "false"
+   * @param quote_currency optional - requested fiat currency
+   * @returns Observable
+   */
+  getPancakeswapAddressExchangeLiquidityBalances(
+    address: String,
+    swaps?: String,
+    quote_currency?: String
+  ) {
+    let quote_currency_param =
+      quote_currency == undefined ? '' : `&quote-currency=${quote_currency}`;
+    let swap_param = swaps == undefined ? '' : `&swaps=${swaps}`;
+    let params = quote_currency_param + swap_param;
 
-  getPancakeswapV2NetworkAssets() {}
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}56/address/${address}/stacks/pancakeswap/acts/?${params}`
+    );
+  }
 
-  getPancakeSwapNetworkAssets() {}
+  /**
+   * Return a paginated list of Pancake V2 pools sorted by exchange volume. Only pools with swaps in the last 24 hours are included.
+   * @param tickers optional - If "tickers" (a comma separated list) is present, only return the pools that contain these tickers.
+   * @param page_number optional - specific page to be returned
+   * @param page_size optional - number of results per page
+   * @returns Observable
+   */
+  getPancakeswapV2NetworkAssets(
+    tickers?: String,
+    page_number?: String,
+    page_size?: String
+  ) {
+    let tickers_param = tickers == undefined ? '' : `&tickers=${tickers}`;
+    let page_number_param =
+      page_number == undefined ? '' : `&page-number=${page_number}`;
+    let page_size_param =
+      page_size == undefined ? '' : `&page-size=${page_size}`;
 
+    let params = tickers + page_number_param + page_size_param;
+    return this.http.get<CovalentResponse<PancakeswapNetworkAssetResponse>>(
+      `${this.apiUrl}56/networks/pancakeswap_v2/assets/?${params}`
+    );
+  }
+
+  /**
+   * Return a paginated list of Pancake pools sorted by exchange volume. Only pools with swaps in the last 24 hours are included.
+   * @param tickers optional - If "tickers" (a comma separated list) is present, only return the pools that contain these tickers.
+   * @param page_number optional - specific page to be returned
+   * @param page_size optional - number of results per page
+   * @returns Observable
+   */
+  getPancakeswapNetworkAssets(
+    tickers?: String,
+    page_number?: String,
+    page_size?: String
+  ) {
+    let tickers_param = tickers == undefined ? '' : `&tickers=${tickers}`;
+    let page_number_param =
+      page_number == undefined ? '' : `&page-number=${page_number}`;
+    let page_size_param =
+      page_size == undefined ? '' : `&page-size=${page_size}`;
+
+    let params = tickers_param + page_number_param + page_size_param;
+    return this.http.get<CovalentResponse<PancakeswapNetworkAssetResponse>>(
+      `${this.apiUrl}56/networks/pancakeswap/assets/?${params}`
+    );
+  }
+
+  /**
+   * Get Pancakeswap V2 network asset by address batch
+   * @param address address
+   * @param page_number optional - specific page to be returned
+   * @param page_size optional - number of results per page
+   * @returns Observable
+   */
+  getPancakeswapV2NetworkAssetsByAddress(
+    address: String,
+    page_number?: String,
+    page_size?: String
+  ) {
+    let page_number_param =
+      page_number == undefined ? '' : `&page-number=${page_number}`;
+    let page_size_param =
+      page_size == undefined ? '' : `&page-size=${page_size}`;
+
+    let params = page_number_param + page_size_param;
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}56/networks/pancakeswap/assets/${address}/?${params}`
+    );
+  }
+
+  // -----------------------------
   // -------- SUSHISWAP ----------
+  // -----------------------------
 
-  getSushiswapAddressExchangeLiquidityTransactions() {}
+  /**
+   * Get Sushiswap address exchange liquidity transactions.
+   * @param chain_id Chain ID of the Blockchain being queried. 1 for Ethereum Mainnet, 137 for Polygon/Matic Mainnet, 80001 for Polygon/Matic Mumbai Testnet, 56 for Binance Smart Chain, 43114 for Avalanche C-Chain Mainnet, 43113 for Fuji C-Chain Testnet, and 250 for Fantom Opera Mainnet.
+   * @param address requested wallet address. Passing in "ENS" resolves automatically.
+   * @param swaps optional - Get additional insight on swap event data related to this address, default: "false"
+   * @param quote_currency optional - requested fiat currency
+   * @returns Observable
+   */
+  getSushiswapAddressExchangeLiquidityTransactions(
+    chain_id: String,
+    address: String,
+    swaps?: String,
+    quote_currency?: String
+  ) {
+    let quote_currency_param =
+      quote_currency == undefined ? '' : `&quote-currency=${quote_currency}`;
+    let swap_param = swaps == undefined ? '' : `&swaps=${swaps}`;
+    let params = quote_currency_param + swap_param;
 
-  getSushiswapAddressExchangeBalances() {}
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}${chain_id}/address/${address}/stacks/sushiswap/acts/?${params}`
+    );
+  }
 
-  getSushiswapNetworkAssets() {}
+  /**
+   * Get Sushiswap address exchange balances. Passing in an ENS resolves automatically.
+   * @param chain_id Chain ID of the Blockchain being queried. 1 for Ethereum Mainnet, 137 for Polygon/Matic Mainnet, 80001 for Polygon/Matic Mumbai Testnet, 56 for Binance Smart Chain, 43114 for Avalanche C-Chain Mainnet, 43113 for Fuji C-Chain Testnet, and 250 for Fantom Opera Mainnet.
+   * @param address requested wallet address
+   * @param quote_currency optional - requested fiat currency
+   * @returns Observable
+   */
+  getSushiswapAddressExchangeBalances(
+    chain_id: String,
+    address: String,
+    quote_currency?: String
+  ) {
+    let quote_currency_param =
+      quote_currency == undefined ? '' : `quote-currency=${quote_currency}`;
+    return this.http.get<CovalentResponse<SushiswapExchangeBalanceResponse>>(
+      `${this.apiUrl}${chain_id}/address/${address}/stacks/sushiswap/balances/?${quote_currency_param}`
+    );
+  }
 
+  /**
+   * Return a paginated list of Sushiswap pools sorted by exchange volume.
+   * @param chain_id Chain ID of the Blockchain being queried. 1 for Ethereum Mainnet, 137 for Polygon/Matic Mainnet, 80001 for Polygon/Matic Mumbai Testnet, 56 for Binance Smart Chain, 43114 for Avalanche C-Chain Mainnet, 43113 for Fuji C-Chain Testnet, and 250 for Fantom Opera Mainnet.
+   * @param tickers optional - If "tickers" (a comma separated list) is present, only return the pools that contain these tickers.
+   * @param page_number optional - specific page to be returned
+   * @param page_size optional - number of results per page
+   * @returns Observable
+   */
+  getSushiswapNetworkAssets(
+    chain_id: String,
+    tickers?: String,
+    page_number?: String,
+    page_size?: String
+  ) {
+    let tickers_param = tickers == undefined ? '' : `&tickers=${tickers}`;
+    let page_number_param =
+      page_number == undefined ? '' : `&page-number=${page_number}`;
+    let page_size_param =
+      page_size == undefined ? '' : `&page-size=${page_size}`;
+
+    let params = tickers_param + page_number_param + page_size_param;
+    return this.http.get<CovalentResponse<SushiswapExchangeBalanceResponse>>(
+      `${this.apiUrl}${chain_id}/networks/sushiswap/assets/?${params}`
+    );
+  }
+
+  // -----------------------------
   // --------- UNISWAP -----------
+  // -----------------------------
 
-  getUniswapV2NetworkAssets() {}
+  /**
+   * Get Uniswap v2 address exchange balances.
+   * @param address - Passing in an "ENS" resolves automatically.
+   * @returns Observable
+   */
+  getUniswapV2AddressExchangeBalances(address: String) {
+    return this.http.get<CovalentResponse<UniswapV2ExchangeBalanceResponse>>(
+      `${this.apiUrl}1/address/${address}/stacks/uniswap_v2/balances/`
+    );
+  }
 
-  getUniswapV1AddressExchangeBalances() {}
+  /**
+   * Get Uniswap v1 address exchange balances.
+   * @param address - Passing in an "ENS" resolves automatically.
+   * @returns Observable
+   */
+  getUniswapV1AddressExchangeBalances(address: String) {
+    return this.http.get<CovalentResponse<UniswapV1ExchangeBalanceResponse>>(
+      `${this.apiUrl}1/address/${address}/stacks/uniswap_v1/balances/`
+    );
+  }
 
-  getUniswapV2AddressExchangeLiquidityTransactions() {}
+  /**
+   * Get Uniswap v2 address exchange liquidity transactions.
+   * @param address requested wallet address. Passing in "ENS" resolves automatically.
+   * @param swaps optional - Get additional insight on swap event data related to this address, default: "false"
+   * @returns Observable
+   */
+  getUniswapV2AddressExchangeLiquidityTransactions(
+    address: String,
+    swaps?: String
+  ) {
+    let swaps_param = swaps == undefined ? '' : `swaps=${swaps}`;
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}1/address/${address}/stacks/uniswap_v2/acts/?${swaps_param}`
+    );
+  }
 
-  getUniswapV2AddressExchangeBalances() {}
+  /**
+   * Return a paginated list of Uniswap pools sorted by exchange volume.
+   * @param tickers optional - If "tickers" (a comma separated list) is present, only return the pools that contain these tickers.
+   * @param page_number optional - specific page to be returned
+   * @param page_size optional - number of results per page
+   * @returns Observable
+   */
+  getUniswapV2NetworkAssets(
+    tickers?: String,
+    page_number?: String,
+    page_size?: String
+  ) {
+    let tickers_param = tickers == undefined ? '' : `&tickers=${tickers}`;
+    let page_number_param =
+      page_number == undefined ? '' : `&page-number=${page_number}`;
+    let page_size_param =
+      page_size == undefined ? '' : `&page-size=${page_size}`;
+
+    let params = tickers_param + page_number_param + page_size_param;
+    return this.http.get<CovalentResponse<>>(
+      `${this.apiUrl}1/networks/uniswap_v2/assets/?${params}`
+    );
+  }
 
   // -----------------------------
   // -----------------------------
